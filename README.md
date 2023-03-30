@@ -4,7 +4,7 @@ This GitHub repository contains exercises and resources that I have been working
 
 ### resources:
 
-1. **What is a plausibility check?**
+**What is a plausibility check?**
 
 In the context of a clearinghouse, a plausibility check is a process of validating and verifying the accuracy and consistency of transaction data submitted by clearing members. The purpose of plausibility checks is to ensure that all the data entered into the clearing system is reasonable and conforms to predefined criteria.
 
