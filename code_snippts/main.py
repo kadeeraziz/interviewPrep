@@ -12,10 +12,10 @@ def main():
     # intraday = Intraday.objects.filter(date__in=['2020-05-11', '2020-05-12'])
 
     # convert to pandas DataFrames
-    # eod = pd.DataFrame(end_of_day.values())
+    # end_of_day = pd.DataFrame(end_of_day.values())
     # intraday = pd.DataFrame(intraday.values())
 
-    eod = pd.DataFrame([
+    end_of_day = pd.DataFrame([
         ['2020-05-11', 'Bank 1', 'A1', 'SPAN', 3212.2],
         ['2020-05-11', 'Bank 1', 'A1', 'IMSM', 837.1], 
         ['2020-05-11', 'Bank 1', 'A2', 'SPAN', 8963.3],
@@ -24,7 +24,7 @@ def main():
         ['2020-05-11', 'Bank 2', 'A1', 'SPAN', 8766.4],
     ])
 
-    eod.columns = ['date', 'clearing_number', 'account', 'margin_type', 'margin']
+    end_of_day.columns = ['date', 'clearing_number', 'account', 'margin_type', 'margin']
 
     intraday = pd.DataFrame([
         ['2020-05-11', '18:00:00', 'Bank 1', 'A1', 'SPAN', 2882.2],
@@ -59,7 +59,7 @@ def main():
 
     intraday.columns = ['date', 'time', 'clearing_number', 'account', 'margin_type', 'margin']
 
-    pc = PlausibilityCheck(eod, intraday)
+    pc = PlausibilityCheck(end_of_day, intraday)
     if not pc.check_previous_day():
         if records := pc.unmatched_previous_day_records:
             data = [r._asdict() for r in records]
@@ -88,7 +88,6 @@ def main():
     
     else:
         print("Last intraday checks passed")
-
 
 if __name__ == '__main__':
     main()
