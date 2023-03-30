@@ -29,18 +29,16 @@ def send_email(data: dict)-> bool:
         - The function assumes that the email template has already been created in the SendGrid dashboard.
     """
 
-    message = Mail(
-        from_email="from@web.de",
-        to_emails="two@web.de")
+    message = Mail(from_email="from@web.de", to_emails="two@web.de")
+
     if settings.ENV == 'production':
         message.add_cc("cc@web.de")
 
     message.dynamic_template_data = data
-    message.template_id = SENDGRID_TEMPLATE_ID
+    message.template_id = settings.SENDGRID_TEMPLATE_ID
 
     try:
-        sg = SendGridAPIClient(
-            api_key=SENDGRID_API_KEY)
+        sg = SendGridAPIClient(api_key=settings.SENDGRID_API_KEY)
         sg.send(message)
     except Exception as error:
         logger(f'e-mail failed.: Error: {error}', 'ERROR')
