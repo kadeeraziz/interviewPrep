@@ -57,23 +57,35 @@ def main():
 
     intraday.columns = ['date', 'time', 'clearing_number', 'account', 'margin_type', 'margin']
 
-    p = PlausibilityCheck(eod, intraday)
-    # print(p.check_previous_day())
-    # print(p.unmatched_end_of_day_records)
-
-    print(p.check_last_intraday())
-    print(p.unmatched_end_of_day_records)
-
-    if not p.check_last_intraday():
-        if p.unmatched_end_of_day_records:
-            data = {'date': p.unmatched_end_of_day_records}
-            send_email(data)
-            logger(p.unmatched_end_of_day_records, 'ERROR')
-        else:
-            logger('No unmatched records', 'DANGER')
-
+    pc = PlausibilityCheck(eod, intraday)
+    if not pc.check_previous_day():
+        if records := pc.unmatched_previous_day_records:
+            data = [r._asdict() for r in records]
+            if send_email(data):
+                print("Email sent")
+            else:
+                print("Email failed")
             
+            logger(f"Previous day check failed for the following records: {data}", "ERROR")
+        else:    
+            logger("Previous day check failed", "ERROR")
+    else: 
+        print("Previous day checks passed")
+
+    if not pc.check_last_intraday():
+        if records := pc.unmatched_last_intraday_records:
+            data = [r._asdict() for r in records]
+            if send_email(data):
+                print("Email sent.")
+            else:
+                print("Email failed.")
+            
+            logger(f"Last intraday check failed for the following records: {data}", "ERROR")
+        else:    
+            logger("Last intraday check failed", "ERROR")
     
+    else:
+        print("Last intraday checks passed")
 
 
 if __name__ == '__main__':
