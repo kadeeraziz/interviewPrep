@@ -29,7 +29,7 @@ def send_email(data: dict)-> bool:
         - The function assumes that the email template has already been created in the SendGrid dashboard.
     """
 
-    message = Mail(from_email="from@web.de", to_emails="two@web.de")
+    message = Mail(from_email="from@web.de", to_emails="to@web.de")
 
     if settings.ENV == 'production':
         message.add_cc("cc@web.de")
