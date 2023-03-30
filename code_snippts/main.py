@@ -69,6 +69,8 @@ def main():
             data = {'date': p.unmatched_end_of_day_records}
             send_email(data)
             logger(p.unmatched_end_of_day_records, 'ERROR')
+        else:
+            logger('No unmatched records', 'DANGER')
 
             
     
