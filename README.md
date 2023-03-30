@@ -1,10 +1,11 @@
-# interviewPrepFun
+# interviewPrep
 This GitHub repository contains exercises and resources that I have been working on to prepare for my upcoming interview.
 
 
 ### resources:
 
 1. **What is a plausibility check?**
+
 In the context of a clearinghouse, a plausibility check is a process of validating and verifying the accuracy and consistency of transaction data submitted by clearing members. The purpose of plausibility checks is to ensure that all the data entered into the clearing system is reasonable and conforms to predefined criteria.
 
 Plausibility checks typically involve comparing data submitted by clearing members with established thresholds, limits, or patterns. For example, a clearinghouse may check the accuracy of trade data by comparing the trade details, such as the trade price and volume, against pre-established reference values or ranges. Similarly, a clearinghouse may perform plausibility checks on margin requirements, collateral values, or risk measures, to ensure that these values are consistent with market conditions and risk exposure.
