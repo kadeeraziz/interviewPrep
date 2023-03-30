@@ -1,6 +1,11 @@
-# django model 
-from django.db import models
+"""
+I chose to use Django models because of its simplicity and ease of use.
+Its built-in model framework makes it easy to define and manage the database schema,
+and the included administration interface saves time by providing a user-friendly way to interact with the data. 
+"""
 
+
+from django.db import models
 class EndOfDay(models.Model):
     date = models.DateField()
     cleaning_number = models.CharField(max_length=100)
@@ -11,8 +16,6 @@ class EndOfDay(models.Model):
     def __str__(self):
         return f"{self.date} {self.cleaning_number}"
     
-
-## intraday has all the same fields as eod, but also has a time field
 class Intraday(models.Model):
     date = models.DateField()
     time = models.TimeField()

@@ -1,3 +1,4 @@
+
 import pandas as pd
 import datetime as dt
 
@@ -17,17 +18,26 @@ class PlausibilityCheck:
     Note:
     - The first intraday values of the day are the values at 8:00:00.
     - The last intraday values of the day are the values at 19:00:00.
-    - The unmatched_end_of_day_records attribute is a list of rows in end_of_day that don't have a match in intraday.
-
+    - The unmatched_previous_day_records are the end-of-day values of the previous day that do not have matching first intraday values.
+    - The unmatched_last_intraday_records are the end-of-day values that do not have matching last intraday values.
     """
 
     def __init__(self, end_of_day: pd.DataFrame, intraday: pd.DataFrame) -> None:
         self.end_of_day = end_of_day
         self.intraday = intraday
-        self.unmatched_end_of_day_records = []
+        self.unmatched_previous_day_records = []
+        self.unmatched_last_intraday_records = []
         self.preprocess()
     
     def preprocess(self)->None:
+        """
+        Preprocesses the end-of-day and intraday DataFrames by converting date and time columns
+        to datetime objects. Raises a ValueError if either DataFrame is empty.
+        """
+
+        if self.end_of_day.empty or self.intraday.empty:
+            raise ValueError("end-of-day and intraday DataFrames must not be empty.")
+        
         self.end_of_day['date'] = pd.to_datetime(self.end_of_day['date'])
         self.intraday['date'] = pd.to_datetime(self.intraday['date'])
         self.intraday['time'] = self.intraday['time'].apply(lambda x: dt.datetime.strptime(x, '%H:%M:%S').time())
@@ -39,18 +49,12 @@ class PlausibilityCheck:
 
         Returns:
             bool: True if all end_of_day values of the previous day have matching first intraday values, False otherwise.
-        
-        Raises:
-            ValueError: If the end-of-day and intraday DataFrames are empty.
         """
-        if self.end_of_day.empty or self.intraday.empty:
-            raise ValueError("end-of-day and intraday DataFrames must not be empty.")
         
         has_match:bool = False
         for eod_row in self.end_of_day.itertuples(index=False):
             has_match = False
             for intra_row in self.intraday.itertuples(index=False):
-                #check, if the eod values of the previous day are the same as the first intraday values
                 if eod_row.date + pd.DateOffset(days=1) == intra_row.date and intra_row.time == dt.time(8, 0, 0):
                     intra_row_no_date = intra_row._asdict()
                     eod_row_no_date = eod_row._asdict()
@@ -67,7 +71,7 @@ class PlausibilityCheck:
                     
             if not has_match:
                 has_match = False
-                self.unmatched_end_of_day_records.append(eod_row)
+                self.unmatched_previous_day_records.append(eod_row)
                 
         return has_match
     
@@ -78,15 +82,9 @@ class PlausibilityCheck:
 
         Returns:
             bool: True if all end_of_day values have matching last intraday values, False otherwise.
-
-        Raises:
-            ValueError: If the end-of-day and intraday DataFrames are empty.
         """
-
-        if self.end_of_day.empty or self.intraday.empty:
-            raise ValueError("end-of-day and intraday DataFrames must not be empty.")
         
-        has_match:bool = True
+        has_match:bool = False
         for eod_row in self.end_of_day.itertuples(index=False):
             has_match = False
             for intra_row in self.intraday.itertuples(index=False):
@@ -100,6 +98,7 @@ class PlausibilityCheck:
                         break
             if not has_match:
                 has_match = False
-                self.unmatched_end_of_day_records.append(eod_row)
+                self.unmatched_last_intraday_records.append(eod_row)
 
         return has_match
+    
