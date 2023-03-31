@@ -10,6 +10,8 @@ class PlausibilityCheck:
     Attributes:
         end_of_day (pandas.DataFrame): A DataFrame of end-of-day values, 
         intraday (pandas.DataFrame): A DataFrame of intraday values, 
+        unmatched_previous_day_records (list): are the end-of-day values of the previous day that do not have matching first intraday values.
+        unmatched_last_intraday_records (list): are the end-of-day values that do not have matching last intraday values.
 
     Methods:
         check_previous_day(): Check if the end-of-day values of the previous day are the same as the first intraday values.
@@ -18,8 +20,6 @@ class PlausibilityCheck:
     Note:
     - The first intraday values of the day are the values at 8:00:00.
     - The last intraday values of the day are the values at 19:00:00.
-    - The unmatched_previous_day_records are the end-of-day values of the previous day that do not have matching first intraday values.
-    - The unmatched_last_intraday_records are the end-of-day values that do not have matching last intraday values.
     """
 
     def __init__(self, end_of_day: pd.DataFrame, intraday: pd.DataFrame) -> None:
@@ -43,7 +43,7 @@ class PlausibilityCheck:
         self.intraday['time'] = self.intraday['time'].apply(lambda x: dt.datetime.strptime(x, '%H:%M:%S').time())
 
 
-    def check_previous_day(self):
+    def check_previous_day(self)->bool:
         """
         Check if the end-of-day values of the previous day are the same as the first intraday values.
 
