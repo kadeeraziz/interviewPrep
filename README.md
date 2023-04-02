@@ -41,7 +41,7 @@ python app.py
 ```
 
 
-### Alternatively you can run in docer
+### Alternatively you can run in docker
 
 
 - Build the docker image
