@@ -5,7 +5,6 @@ from sqlalchemy.orm import sessionmaker
 
 Base = declarative_base()
 
-
 class EndOfDay(Base):
     __tablename__ = 'end_of_day'
 
@@ -107,8 +106,6 @@ def insert_data():
     insert_dummy_data(session, eod_dummpy_data, intraday_dummy_data)
 
 
-
-
 def insert_dummy_data(session, eod_dummpy_data, intraday_dummy_data):
     """Insert dummy data into the tables"""
     session = get_session()
@@ -133,12 +130,3 @@ def insert_dummy_data(session, eod_dummpy_data, intraday_dummy_data):
         session.add(intraday)
     
     session.commit()
-
-
-
-
-
-
-
-
-

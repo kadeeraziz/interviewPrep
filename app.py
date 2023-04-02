@@ -1,6 +1,4 @@
 import pandas as pd
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
 from db import EndOfDay, Intraday, get_session, create_tables
 from plausibility_check import PlausibilityCheck
 
@@ -8,9 +6,9 @@ from plausibility_check import PlausibilityCheck
 def send_email(data, title:str=''):
     print(f'title: {title}  -- data: {data}')
 
+
 def logger(message, level):
     print(f"{level}: {message}")
-
 
 
 def main():
@@ -35,8 +33,6 @@ def main():
         print('Alles Ok. the end-of-day values are the same as the last intraday values.')
     else:
         print('ERROR in check_last_intraday()')
-
-
 
 
 if __name__ == '__main__':
