@@ -6,10 +6,8 @@ from plausibility_check import PlausibilityCheck
 def send_email(data, title:str=''):
     print(f'title: {title}  -- data: {data}')
 
-
 def logger(message, level):
     print(f"{level}: {message}")
-
 
 def main():
     print('Start of main()')
@@ -23,7 +21,6 @@ def main():
     # Here I could have filtered the intraday values by date and time
     intraday = pd.read_sql(session.query(Intraday).filter().statement, session.bind)
     intraday = intraday.drop(columns=['id'])
-
 
     pc = PlausibilityCheck(end_of_day, intraday)
     if pc.check_previous_day():
