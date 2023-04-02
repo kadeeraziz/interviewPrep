@@ -63,9 +63,11 @@ class PlausibilityCheck:
             return True
 
         if not end_of_day_unmatched.empty:
+            print('---------------------------------------------------------------')
             send_email(end_of_day_unmatched.to_dict('records'), 'end_of_day_unmatched')
             logger(end_of_day_unmatched.to_dict('records'), 'ERROR')
         if not intraday_unmatched.empty:
+            print('---------------------------------------------------------------')
             send_email(intraday_unmatched.to_dict('records'), 'intraday_unmatched')
             logger(intraday_unmatched.to_dict('records'), 'ERROR')
     
