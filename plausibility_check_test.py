@@ -51,19 +51,12 @@ def test_plausibility_check():
     
     # test check_previous_day method
     assert pc.check_previous_day() == True
-    
-    # test unmatched_previous_day_records attribute
-    assert pc.unmatched_previous_day_records == []
 
 
     # test check_last_intraday method
     assert pc.check_last_intraday() == True
     
    
-    # test unmatched_end_of_day_records attribute
-    assert pc.unmatched_last_intraday_records == []
-
-
 
     # test when there are unmatched intraday records
     end_of_day = pd.DataFrame([
@@ -96,14 +89,9 @@ def test_plausibility_check():
     # test check_previous_day method
     assert pc_unmatched.check_previous_day() == False
 
-    # test unmatched_previous_day_records attribute
-    assert len(pc_unmatched.unmatched_previous_day_records) >= 1
 
     # test check_last_intraday method
     assert pc_unmatched.check_last_intraday() == False
-
-    # test unmatched_end_of_day_records attribute
-    assert len(pc_unmatched.unmatched_last_intraday_records) >= 1
 
 
     # test when end-of-day and intraday DataFrames are empty

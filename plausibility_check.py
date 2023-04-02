@@ -1,9 +1,6 @@
 
 import pandas as pd
 import datetime as dt
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from models import EndOfDay, Intraday
 
 
 class PlausibilityCheck:
@@ -97,41 +94,15 @@ class PlausibilityCheck:
             return True
 
         if not end_of_day_unmatched.empty:
+            print('---------------------------------------------------------------')
             send_email(end_of_day_unmatched.to_dict('records'), 'end_of_day_unmatched')
             logger(end_of_day_unmatched.to_dict('records'), 'ERROR')
         if not intraday_unmatched.empty:
+            print('---------------------------------------------------------------')
             send_email(intraday_unmatched.to_dict('records'), 'intraday_unmatched')
             logger(intraday_unmatched.to_dict('records'), 'ERROR')
     
         return False
-
-
-
-def main_using_db():
-    engine = create_engine('sqlite:///LZDB.db', echo=True)
-    Session = sessionmaker(bind=engine)
-    session = Session()
-
-    # Get the end-of-day values of the previous day
-    end_of_day = pd.read_sql(session.query(EndOfDay).filter().statement, session.bind)
-    end_of_day = end_of_day.drop(columns=['id'])
-    intraday = pd.read_sql(session.query(Intraday).filter().statement, session.bind)
-    intraday = intraday.drop(columns=['id'])
-
-
-    pc = PlausibilityCheck(end_of_day, intraday)
-    if pc.check_previous_day():
-        print('Alles OK. All the end-of-day values of the previous day are the same as the first intraday values.')
-    else:
-        print('ERROR in check_previous_day()')
-
-    if pc.check_last_intraday():
-        print('Alles Ok. Check if the end-of-day values are the same as the last intraday values.')
-    else:
-        print('ERROR in check_last_intraday()')
-
-    
-        
 
 
 def main():
@@ -194,10 +165,10 @@ def main():
 
 
 def send_email(data, title:str=''):
-    print(f'title: {title}  -- data: {data}')
+    print(f'sending email...: title: {title}  -- records: {data}')
 
 def logger(message, level):
-    print(f"{level}: {message}")
+    print(f"logging...: {level}: {message}")
 
 if __name__ == '__main__':
     main()
