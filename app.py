@@ -20,7 +20,7 @@ def main():
     end_of_day = pd.read_sql(session.query(EndOfDay).filter().statement, session.bind)
     end_of_day = end_of_day.drop(columns=['id'])
 
-    # Here I could have filtered the intraday values by date and time and get only 
+    # Here I could have filtered the intraday values by date and time
     intraday = pd.read_sql(session.query(Intraday).filter().statement, session.bind)
     intraday = intraday.drop(columns=['id'])
 
